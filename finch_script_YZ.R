@@ -7,8 +7,6 @@ summary(finch)
 #simplify
 finch_simple = subset(finch, select = -c(month, day, year, day_of_year, number_of_visit, latitude, longitude, wind, pox_scale, pox_lesion))
 
-p |> ggplot(aes(x=finch_simple$species, y=finch_simple$beak_length, label=finch_simple_band)) + geom_label()
-
 subset(finch_simple)
 #identify the morphology data
 #class(finch_simple$morphology)
