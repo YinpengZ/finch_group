@@ -22,12 +22,12 @@ ggplot(finch_simple, aes(sex, mass, group=sex)) +
   ylab("Mass (g)") +
   xlab("Sex")
 
-###Obtaining median values
+###Obtaining mean values
 mean_values <- finch_simple %>%
   group_by(sex) %>%
   summarize(mean_mass = mean(mass, na.rm = TRUE))
 
-###Adding median values to violin plot
+###Adding mean values to violin plot
 ggplot(finch_simple, aes(sex, mass, group=sex)) + 
   geom_violin(fill="#B7410E", color="black") + 
   ggtitle("Finch Mass by Sex") + 
