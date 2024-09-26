@@ -15,8 +15,12 @@ finch_simple$beak_depth <- as.integer(finch_simple$beak_depth)
 finch_simple$beak_length <- as.integer(finch_simple$beak_length) 
 finch_simple$beak_width <- as.integer(finch_simple$beak_width) 
 finch_simple$wing <- as.integer(finch_simple$wing) 
-finch_simple$mass <- as.integer(finch_simple$mass) 
-#ignore the label if too messy
-ggplot(finch_simple, aes(x = species, y = beak_length, label = band)) + 
-  geom_label()
+finch_simple$mass <- as.integer(finch_simple$mass)
 
+#plot the correlation b/w species and mass
+ggplot(finch_simple, aes(x = species, y = mass, fill = species)) +
+  geom_boxplot() +
+  stat_summary(fun = mean, geom = "point", shape = 23, size = 2, fill = "black", color = "black") +
+  stat_summary(fun = mean, geom = "text", aes(label = round(..y.., 1)), vjust = -1.5, color = "black") +
+  labs(title = "Body Mass by Finch Species", x = "Finch Species", y = "Body Mass (g)") +
+  scale_fill_manual(values = c("cactus" = "lightblue", "large" = "lightgreen", "medium" = "red", "small" = "yellow"))
