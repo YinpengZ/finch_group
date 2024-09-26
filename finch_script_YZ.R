@@ -47,7 +47,9 @@ finch_simple$mass <- as.integer(finch_simple$mass)
 
 #plot the correlation b/w species and mass
 ggplot(finch_simple, aes(x = species, y = mass, fill = species)) +
-  geom_boxplot() +
-  labs(title = "Body mass by finch species", x = "Finch Species", y = "Body Mass (g)") +
-  scale_fill_manual(values = c("cactus" = "lightblue", "large" = "lightgreen", "medium" = "red", "small" = "yellow"))
->>>>>>> c728a81ab8cc714c90970844da4f3378a0560e4f
+     geom_boxplot() +
+     stat_summary(fun = mean, geom = "point", shape = 23, size = 2, fill = "black", color = "black") +
+     stat_summary(fun = mean, geom = "text", aes(label = round(..y.., 1)), vjust = -1.5, color = "black") +
+     labs(title = "Body Mass by Finch Species", x = "Finch Species", y = "Body Mass (g)") +
+     scale_fill_manual(values = c("cactus" = "lightblue", "large" = "lightgreen", "medium" = "red", "small" = "yellow"))
+
