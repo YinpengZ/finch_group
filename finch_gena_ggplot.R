@@ -39,3 +39,4 @@ ggplot(finch_simple, aes(sex, mass, group=sex)) +
             vjust = -0.9, hjust = -0.50, color = "black") +  # Adding text labels above median points
   theme_minimal()
 
+###Testing
