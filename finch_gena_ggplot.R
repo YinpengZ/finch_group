@@ -15,6 +15,15 @@ finch_simple[1700,"sex"] <- "U"
 finch_simple[1666,"sex"]
 finch_simple[1666,"sex"] <- "U"
 
+finch_simple$sex <- trimws(finch_simple$sex)
+
+### Filter out any rows with undefined or unexpected 'sex' values
+valid_sex <- c("M", "F", "U")
+finch_simple <- finch_simple %>% filter(sex %in% valid_sex)
+
+### Ensure 'sex' is a factor with correct levels
+finch_simple$sex <- factor(finch_simple$sex, levels = c("M", "F", "U"))
+
 ###This figure is the first draft of the violin plot without mean values
 ggplot(finch_simple, aes(sex, mass, group=sex)) + 
   geom_violin(fill="#B7410E", color="black") + 
@@ -33,6 +42,7 @@ ggplot(finch_simple, aes(sex, mass, group=sex)) +
   ggtitle("Finch Mass by Sex") + 
   ylab("Mass (g)") + 
   xlab("Sex") +
+  stat_summary(aes(x=sex, y=mass), fun.y = mean, geom="point") +
   geom_point(data = mean_values, aes(x = sex, y = mean_mass), 
              color = "black", size = 3, shape = 21, fill = "black") + 
   geom_text(data = mean_values, aes(x = sex, y = mean_mass, label = round(mean_mass, 1)), 
@@ -40,3 +50,4 @@ ggplot(finch_simple, aes(sex, mass, group=sex)) +
   theme_minimal()
 
 ###Testing
+
