@@ -2,6 +2,7 @@
 library(dplyr)
 library(ggplot2)
 library(dslabs)
+library(tidyverse)
 
 #plotting the finch data
 finch <- read.csv("finch.csv", header = TRUE)
@@ -64,4 +65,38 @@ ggplot(finch_simple, aes(sex, mass, group=sex)) +
   theme_minimal()
 
 
-###Add script here
+# Tanner
+# Cleaning NAs and parsing out columns needed for Tanner's plots
+
+# Subset data to get only vars we care about for the next two plots
+elev_vol = subset(finch_simple, select = c(elevation, beak_width, beak_length, beak_depth, species, type_of_site))
+
+# Get rid of NAs
+elev_vol = na.omit(elev_vol)
+
+# Calculate and add the volume column to the data
+elev_vol = elev_vol %>% 
+  mutate(beak_volume = 3.14159*(beak_width/2)*(beak_depth/2)*beak_length/3) %>% 
+  filter(beak_volume < 20000, beak_width < 60, species == c('small', 'medium', 'cactus'))
+
+# comparative beak volume by site/species
+
+p <- ggplot(data = elev_vol)
+
+# Violin lot for beak volume by species
+p + geom_violin(aes(species, beak_volume, col=species)) + xlab("Species") +
+  theme(legend.position = 'none') +
+  ylab("Approximate Beak Volume (mm^3)") +
+  ggtitle("Beak volume distribution across species") +
+  scale_x_discrete(labels = c(cactus = "Cactus", medium = "Medium", small = 'Small')) +
+  stat_summary(aes(x=species, y=beak_volume), fun.y = mean, geom = "point", col='black')
+
+# Violin plot for beak volume by site type
+p + geom_violin(aes(type_of_site, beak_volume, color = type_of_site)) + 
+  xlab("Site Type") +
+  ylab("Approximate Beak Volume (mm^3)") +
+  ggtitle("Beak volume distribution across types of sites") +
+  theme(legend.position = 'none') +
+  scale_fill_brewer(palette = "BuPu") + 
+  scale_x_discrete(labels = c(Agricola = "Farm", arida = "Dryland", Bosque = "Forest", Ganadera = "Ranch")) +
+  stat_summary(aes(x=type_of_site, y=beak_volume), fun.y = mean, geom = "point", col='black')
